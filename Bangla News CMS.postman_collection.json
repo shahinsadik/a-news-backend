@@ -1,0 +1,209 @@
+{
+  "info": {
+    "_postman_id": "bangla-news-cms-collection",
+    "name": "Bangla News CMS",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:5000" }
+  ],
+  "item": [
+    {
+      "name": "Auth - Login",
+      "request": {
+        "method": "POST",
+        "header": [ { "key": "Content-Type", "value": "application/json" } ],
+        "url": { "raw": "{{baseUrl}}/api/auth/login", "host": [ "{{baseUrl}}" ], "path": [ "api", "auth", "login" ] },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"admin@example.com\",\n  \"password\": \"adminpassword\"\n}"
+        }
+      }
+    },
+    {
+      "name": "Auth - Add Editor (Admin Only)",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" },
+          { "key": "Authorization", "value": "Bearer {{token}}" }
+        ],
+        "url": { "raw": "{{baseUrl}}/api/auth/users", "host": [ "{{baseUrl}}" ], "path": [ "api", "auth", "users" ] },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Editor Name\",\n  \"email\": \"editor@example.com\",\n  \"password\": \"editorpassword\"\n}"
+        }
+      }
+    },
+    {
+      "name": "Posts - Create Post",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" },
+          { "key": "Authorization", "value": "Bearer {{token}}" }
+        ],
+        "url": { "raw": "{{baseUrl}}/api/posts", "host": [ "{{baseUrl}}" ], "path": [ "api", "posts" ] },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"title\": \"Sample Post\",\n  \"content\": \"This is a sample post.\",\n  \"categories\": [],\n  \"tags\": [\"news\"],\n  \"images\": [],\n  \"youtubeUrls\": []\n}"
+        }
+      }
+    },
+    {
+      "name": "Posts - Get All Posts",
+      "request": {
+        "method": "GET",
+        "url": { "raw": "{{baseUrl}}/api/posts", "host": [ "{{baseUrl}}" ], "path": [ "api", "posts" ] }
+      }
+    },
+    {
+      "name": "Posts - Get Post by ID",
+      "request": {
+        "method": "GET",
+        "url": { "raw": "{{baseUrl}}/api/posts/:id", "host": [ "{{baseUrl}}" ], "path": [ "api", "posts", ":id" ] }
+      }
+    },
+    {
+      "name": "Posts - Update Post",
+      "request": {
+        "method": "PUT",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" },
+          { "key": "Authorization", "value": "Bearer {{token}}" }
+        ],
+        "url": { "raw": "{{baseUrl}}/api/posts/:id", "host": [ "{{baseUrl}}" ], "path": [ "api", "posts", ":id" ] },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"title\": \"Updated Title\"\n}"
+        }
+      }
+    },
+    {
+      "name": "Posts - Delete Post",
+      "request": {
+        "method": "DELETE",
+        "header": [ { "key": "Authorization", "value": "Bearer {{token}}" } ],
+        "url": { "raw": "{{baseUrl}}/api/posts/:id", "host": [ "{{baseUrl}}" ], "path": [ "api", "posts", ":id" ] }
+      }
+    },
+    {
+      "name": "Categories - Create Category",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" },
+          { "key": "Authorization", "value": "Bearer {{token}}" }
+        ],
+        "url": { "raw": "{{baseUrl}}/api/categories", "host": [ "{{baseUrl}}" ], "path": [ "api", "categories" ] },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Sample Category\"\n}"
+        }
+      }
+    },
+    {
+      "name": "Categories - Get All Categories",
+      "request": {
+        "method": "GET",
+        "url": { "raw": "{{baseUrl}}/api/categories", "host": [ "{{baseUrl}}" ], "path": [ "api", "categories" ] }
+      }
+    },
+    {
+      "name": "Categories - Get Category by ID",
+      "request": {
+        "method": "GET",
+        "url": { "raw": "{{baseUrl}}/api/categories/:id", "host": [ "{{baseUrl}}" ], "path": [ "api", "categories", ":id" ] }
+      }
+    },
+    {
+      "name": "Categories - Update Category",
+      "request": {
+        "method": "PUT",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" },
+          { "key": "Authorization", "value": "Bearer {{token}}" }
+        ],
+        "url": { "raw": "{{baseUrl}}/api/categories/:id", "host": [ "{{baseUrl}}" ], "path": [ "api", "categories", ":id" ] },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Updated Category\"\n}"
+        }
+      }
+    },
+    {
+      "name": "Categories - Delete Category",
+      "request": {
+        "method": "DELETE",
+        "header": [ { "key": "Authorization", "value": "Bearer {{token}}" } ],
+        "url": { "raw": "{{baseUrl}}/api/categories/:id", "host": [ "{{baseUrl}}" ], "path": [ "api", "categories", ":id" ] }
+      }
+    },
+    {
+      "name": "Uploads - Upload Images",
+      "request": {
+        "method": "POST",
+        "header": [ { "key": "Authorization", "value": "Bearer {{token}}" } ],
+        "url": { "raw": "{{baseUrl}}/api/uploads/images", "host": [ "{{baseUrl}}" ], "path": [ "api", "uploads", "images" ] },
+        "body": {
+          "mode": "formdata",
+          "formdata": [
+            { "key": "images", "type": "file", "src": "" }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Ads - Create Ad (Admin Only)",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" },
+          { "key": "Authorization", "value": "Bearer {{token}}" }
+        ],
+        "url": { "raw": "{{baseUrl}}/api/ads", "host": [ "{{baseUrl}}" ], "path": [ "api", "ads" ] },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"title\": \"Sample Ad\",\n  \"imageUrl\": \"https://example.com/image.jpg\",\n  \"linkUrl\": \"https://example.com\",\n  \"position\": \"sidebar\",\n  \"isActive\": true\n}"
+        }
+      }
+    },
+    {
+      "name": "Ads - Get All Ads",
+      "request": {
+        "method": "GET",
+        "url": { "raw": "{{baseUrl}}/api/ads", "host": [ "{{baseUrl}}" ], "path": [ "api", "ads" ] }
+      }
+    },
+    {
+      "name": "Ads - Get Ad by ID",
+      "request": {
+        "method": "GET",
+        "url": { "raw": "{{baseUrl}}/api/ads/:id", "host": [ "{{baseUrl}}" ], "path": [ "api", "ads", ":id" ] }
+      }
+    },
+    {
+      "name": "Ads - Update Ad (Admin Only)",
+      "request": {
+        "method": "PUT",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" },
+          { "key": "Authorization", "value": "Bearer {{token}}" }
+        ],
+        "url": { "raw": "{{baseUrl}}/api/ads/:id", "host": [ "{{baseUrl}}" ], "path": [ "api", "ads", ":id" ] },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"title\": \"Updated Ad\"\n}"
+        }
+      }
+    },
+    {
+      "name": "Ads - Delete Ad (Admin Only)",
+      "request": {
+        "method": "DELETE",
+        "header": [ { "key": "Authorization", "value": "Bearer {{token}}" } ],
+        "url": { "raw": "{{baseUrl}}/api/ads/:id", "host": [ "{{baseUrl}}" ], "path": [ "api", "ads", ":id" ] }
+      }
+    }
+  ]
+} 
