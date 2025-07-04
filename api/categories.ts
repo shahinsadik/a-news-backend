@@ -1,8 +1,6 @@
 import { VercelRequest, VercelResponse } from '@vercel/node';
 import { connectDB } from '../src/config/db';
-import { Post } from '../src/posts/post.model';
-import '../src/users/user.model';
-import '../src/categories/category.model';
+import { Category } from '../src/categories/category.model';
 
 function getRawBody(req: VercelRequest): Promise<string> {
   return new Promise((resolve, reject) => {
@@ -24,13 +22,11 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
   if (req.method === 'GET') {
     try {
-      const posts = await Post.find()
-        .populate('author', 'name email role')
-        .populate('categories', 'name');
-      res.status(200).json(posts);
+      const categories = await Category.find();
+      res.status(200).json(categories);
     } catch (error: any) {
       console.error(error);
-      res.status(500).json({ error: error.message || 'Failed to fetch posts' });
+      res.status(500).json({ error: error.message || 'Failed to fetch categories' });
     }
   } else if (req.method === 'POST') {
     try {
@@ -39,25 +35,28 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         const raw = await getRawBody(req);
         body = JSON.parse(raw);
       }
-      const { title, content, categories, tags, images, youtubeUrls, author } = body;
-      if (!title || !content) {
-        return res.status(400).json({ error: 'Title and content are required' });
+      const { name, slug: providedSlug } = body;
+      let slug = providedSlug;
+      if (!slug || slug.trim() === '') {
+        if (!name || name.trim() === '') {
+          return res.status(400).json({ error: 'Name is required' });
+        }
+        slug = name
+          .toLowerCase()
+          .replace(/[^a-z0-9]+/g, '-')
+          .replace(/(^-|-$)+/g, '');
       }
-      // In production, extract author from JWT token
-      const post = new Post({
-        title,
-        content,
-        categories,
-        tags,
-        images,
-        youtubeUrls,
-        author // Should be set from authentication in production
-      });
-      await post.save();
-      res.status(201).json(post);
+      if (!slug || slug.trim() === '') {
+        return res.status(400).json({ error: 'Slug is required' });
+      }
+      // Detailed logging for debugging
+     
+      const category = new Category({ name, slug });
+      await category.save();
+      res.status(201).json(category);
     } catch (error: any) {
       console.error(error);
-      res.status(500).json({ error: error.message || 'Failed to create post' });
+      res.status(500).json({ error: error.message || 'Failed to create category' });
     }
   } else {
     res.status(405).json({ error: 'Method Not Allowed' });

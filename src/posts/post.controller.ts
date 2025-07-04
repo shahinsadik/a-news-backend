@@ -23,7 +23,9 @@ export const getPosts = async (req: Request, res: Response) => {
 };
 
 export const getPostById = async (req: Request, res: Response) => {
-  const post = await Post.findById(req.params.id).populate('author', 'name email role').populate('categories', 'name');
+  const post = await Post.findById(req.params.id)
+    .populate('author', 'name email role')
+    .populate('categories', 'name');
   if (!post) return res.status(404).json({ error: 'Post not found' });
   res.json(post);
 };
